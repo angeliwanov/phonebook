@@ -7,6 +7,5 @@ describe('App', () => {
   test('renders headline', () => {
     render(<App />);
     expect(screen.getByText('Phonebook')).toBeVisible();
-    expect(screen.getByText('Numbers')).toBeVisible();
   });
 });

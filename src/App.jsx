@@ -1,18 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
-import Form from "./components/Form";
-import Notification from "./components/Notification";
-import Persons from "./components/Persons";
-import SearchBar from "./components/SearchBar";
-import services from "./services/persons";
+import { useEffect, useMemo, useState } from 'react';
+import Form from './components/Form';
+import Notification from './components/Notification';
+import Persons from './components/Persons';
+import SearchBar from './components/SearchBar';
+import services from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const { getAll, createPerson, deletePerson, updatePerson } = services;
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
+  const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const filteredPersons = useMemo(
     () =>
       persons.filter((person) =>
@@ -23,8 +23,12 @@ const App = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const initialPersons = await getAll();
-      setPersons(initialPersons);
+      try {
+        const initialPersons = await getAll();
+        setPersons(initialPersons);
+      } catch (e) {
+        console.log(e);
+      }
     }
     fetchData();
   }, [getAll]);
@@ -103,12 +107,12 @@ const App = () => {
       }
     }
 
-    setNewName("");
-    setNewNumber("");
+    setNewName('');
+    setNewNumber('');
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Do you really want to delete?")) {
+    if (window.confirm('Do you really want to delete?')) {
       try {
         await deletePerson(id);
         setPersons((p) => p.filter((i) => i.id !== id));
