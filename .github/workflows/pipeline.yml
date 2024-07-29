@@ -30,7 +30,7 @@ jobs:
       # - name: E2E Test
       #   run: npm run test:e2e
       # - name: Trigger deployment
-      #   run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      # run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Test Success
         uses: rjstone/discord-webhook-notify@v1.0.4
         if: success()
@@ -56,3 +56,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+      - name: Test Success
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: success()
+        with:
+          severity: info
+          details: Phonbook App Tag created successfully
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Test Failure
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: failure()
+        with:
+          severity: error
+          details: Phonbook App Tag failed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
