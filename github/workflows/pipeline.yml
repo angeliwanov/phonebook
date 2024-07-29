@@ -29,21 +29,21 @@ jobs:
       #   run: npx playwright install --with-deps
       # - name: E2E Test
       #   run: npm run test:e2e
-      - name: Trigger deployment
-        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      # - name: Trigger deployment
+      #   run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Test Success
         uses: rjstone/discord-webhook-notify@v1.0.4
         if: success()
         with:
           severity: info
-          details: A new version of Pokedex deployed
+          details: A new version of Phonbook App deployed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Test Failure
         uses: rjstone/discord-webhook-notify@v1.0.4
         if: failure()
         with:
           severity: error
-          details: Build failed
+          details: Phonbook App Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:
     if: ${{ github.event_name == 'push' && !contains(toJson(join(github.event.commits.*.message)), '#skip')}}
