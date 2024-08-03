@@ -9,8 +9,7 @@
     "dev": "nodemon index.js",
     "eslint": "eslint",
     "test": "vitest run",
-    "test:e2e": "playwright test",
-    "test:report": "playwright show-report"
+    "test:e2e": "playwright test"
   },
   "author": "Angel Ivanov",
   "license": "MIT",
