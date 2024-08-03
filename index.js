@@ -19,7 +19,7 @@ morgan.token('postData', (request) => {
 //MIDDLEWARE ALL REQUESTS CONFIG
 app.use(morgan(':method :url :response-time ms :postData'));
 
-//GET ALL PERSONS
+//GET ALL PEOPLE
 app.get('/api/persons', async (request, response) => {
   const persons = await Person.find({});
   response.json(persons);
