@@ -1,6 +1,6 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
-
+import net from 'net';
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -10,6 +10,21 @@ const { defineConfig, devices } = require('@playwright/test');
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
+
+const getFreePort = () => {
+  return new Promise((resolve, reject) => {
+    const srv = net.createServer();
+    srv.listen(0, () => {
+      const freePort = srv.address().port;
+      srv.close((err) => {
+        if (err) reject(err);
+        return resolve(freePort);
+      });
+    });
+  });
+};
+
+const port = await getFreePort();
 
 module.exports = defineConfig({
   testDir: './e2e-tests',
@@ -72,9 +87,9 @@ module.exports = defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    // port: 3001,
+    port,
     command: 'npm run start',
-    url: 'http://localhost:3001',
+    // url: 'http://localhost:3001',
     reuseExistingServer: !process.env.CI,
   },
 });
