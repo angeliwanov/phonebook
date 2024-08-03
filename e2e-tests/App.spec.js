@@ -1,6 +1,6 @@
 const { test, describe, expect } = require('@playwright/test');
 
-describe('app', () => {
+describe('App', () => {
   test('front page can be opened', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByText('Phonebook')).toBeVisible();
