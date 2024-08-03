@@ -1,32 +1,32 @@
-require("dotenv").config();
-const express = require("express");
-const morgan = require("morgan");
+require('dotenv').config();
+const express = require('express');
+const morgan = require('morgan');
 const app = express();
-const cors = require("cors");
-const Person = require("./models/person");
+const cors = require('cors');
+const Person = require('./models/person');
 
 //MIDDLEWARE JSON
 app.use(express.json());
 app.use(cors());
-app.use(express.static("dist"));
+app.use(express.static('dist'));
 
 //MIDDLEWARE MORGAN POST REQUESTS CONFIG
-morgan.token("postData", (request) => {
-  if (request.method == "POST") return " " + JSON.stringify(request.body);
-  else return " ";
+morgan.token('postData', (request) => {
+  if (request.method == 'POST') return ' ' + JSON.stringify(request.body);
+  else return ' ';
 });
 
 //MIDDLEWARE ALL REQUESTS CONFIG
-app.use(morgan(":method :url :response-time ms :postData"));
+app.use(morgan(':method :url :response-time ms :postData'));
 
 //GET ALL PERSONS
-app.get("/api/persons", async (request, response) => {
+app.get('/api/persons', async (request, response) => {
   const persons = await Person.find({});
   response.json(persons);
 });
 
 //GET INFO
-app.get("/info", async (request, response) => {
+app.get('/info', async (request, response) => {
   const today = new Date();
   const people = (await Person.find({})).length;
   response.send(`
@@ -35,8 +35,8 @@ app.get("/info", async (request, response) => {
   `);
 });
 
-//GET PERSON
-app.get("/api/persons/:id", async (request, response, next) => {
+//GET PERSONS
+app.get('/api/persons/:id', async (request, response, next) => {
   try {
     const person = await Person.findById(request.params.id);
     if (person) {
@@ -50,7 +50,7 @@ app.get("/api/persons/:id", async (request, response, next) => {
 });
 
 //DELETE PERSON
-app.delete("/api/persons/:id", async (request, response, next) => {
+app.delete('/api/persons/:id', async (request, response, next) => {
   try {
     await Person.findByIdAndDelete(request.params.id);
     response.sendStatus(204).end();
@@ -59,14 +59,14 @@ app.delete("/api/persons/:id", async (request, response, next) => {
   }
 });
 
-app.put("/api/persons/:id", async (request, response, next) => {
+app.put('/api/persons/:id', async (request, response, next) => {
   const { name, number } = request.body;
 
   try {
     const updatedPerson = await Person.findByIdAndUpdate(
       request.params.id,
       { name, number },
-      { new: true, runValidators: true, context: "query" }
+      { new: true, runValidators: true, context: 'query' }
     );
     response.json(updatedPerson);
   } catch (error) {
@@ -75,7 +75,7 @@ app.put("/api/persons/:id", async (request, response, next) => {
 });
 
 //POST - CREATE PERSON
-app.post("/api/persons", async (request, response, next) => {
+app.post('/api/persons', async (request, response, next) => {
   const body = request.body;
 
   const person = new Person({
@@ -93,7 +93,7 @@ app.post("/api/persons", async (request, response, next) => {
 
 //unknownEndpoint
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: "unknown endpoint" });
+  response.status(404).send({ error: 'unknown endpoint' });
 };
 
 app.use(unknownEndpoint);
@@ -102,9 +102,9 @@ app.use(unknownEndpoint);
 const errorHandler = (error, request, response, next) => {
   console.log(error.message);
 
-  if (error.name === "CastError") {
-    return response.status(400).send({ error: "malformatter id" });
-  } else if (error.name === "ValidationError") {
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatter id' });
+  } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message });
   }
 
