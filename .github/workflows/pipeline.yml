@@ -27,8 +27,8 @@ jobs:
         run: npm run test
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      # - name: E2E Test
-      #   run: npm run test:e2e
+      - name: E2E Test
+        run: npm run test:e2e
       - name: Trigger deployment
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Test Success
